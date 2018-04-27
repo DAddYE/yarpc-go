@@ -82,10 +82,12 @@ func init() {
 	)
 }
 
-type client struct {
+// Client is a wrapper around a thrift.Client
+type Client struct {
 	<if .Parent><import .ParentClientPackagePath>.Interface
 	<end>
-	c <$thrift>.Client
+	// Client is the underlining thirft client
+	Client <$thrift>.Client
 }
 
 <$service := .>
@@ -95,7 +97,7 @@ type client struct {
 <$context := import "context">
 <$prefix := printf "%s.%s_%s_" (import $module.ImportPath) $service.Name .Name>
 
-func (c client) <.Name>(
+func (c Client) <.Name>(
 	ctx <$context>.Context, <range .Arguments>
 	_<.Name> <formatType .Type>,<end>
 	opts ...<$yarpc>.CallOption,
